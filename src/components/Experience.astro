@@ -9,32 +9,66 @@ interface Props {
 const { experience } = Astro.props;
 ---
 
-<Section text="Work Experience" href="experience">
+<Section text="Habilidades" href="experiencia">
   {
     experience.map(({ company, position, startDate, endDate, summary }) => (
       <div class="mb-10">
-        <h3 class="mb-1.5 font-serif text-2xl font-semibold text-white">
-          {company}
-        </h3>
-        <div class="flex flex-col items-start pb-5">
-          <h4 class="mb-0.5 font-serif text-2xl font-medium text-primary">
-            {position}
-          </h4>
-          <span class="pb-[2px] text-sm text-white/70">
-            {startDate} — {endDate}
-          </span>
+        <div class="px-2 py-2 md:px-4 md:py-6">
+  <!-- Contenido sin fondo ni borde en el wrapper -->
+          
+          {(position || startDate || endDate) && (
+            <div class="flex flex-wrap items-center gap-2 mb-3">
+              {position && <span class="font-medium text-white/90">{position}</span>}
+              {(startDate || endDate) && <span class="text-xs text-primary/80">{startDate}{startDate && endDate && ' — '}{endDate}</span>}
+            </div>
+          )}
+          {Array.isArray(summary) && (
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 mt-6">
+              {summary.map((log, idx) => (
+                <div class="rounded-xl p-4 flex flex-col items-center justify-center min-h-[90px] max-h-[150px] hover:scale-105 hover:shadow-blue-400/40 hover:shadow-lg transition-all duration-200 cursor-pointer group">
+                  <span class="mb-2">
+                    {idx === 0 && (
+                      <svg class="w-6 h-6 text-slate-100 group-hover:text-blue-400 transition-colors duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M8 12h8M12 8v8"/></svg>
+                    )}
+                    {idx === 1 && (
+                      <svg class="w-6 h-6 text-slate-100 group-hover:text-blue-400 transition-colors duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 17v-2a4 4 0 014-4h8a4 4 0 014 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    )}
+                    {idx === 2 && (
+                      <svg class="w-6 h-6 text-slate-100 group-hover:text-blue-400 transition-colors duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a4 4 0 018 0v2"/></svg>
+                    )}
+                    {idx === 3 && (
+                      <svg class="w-6 h-6 text-slate-100 group-hover:text-blue-400 transition-colors duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20v-6M8 20v-4M16 20v-2"/><rect x="2" y="4" width="20" height="6" rx="2"/></svg>
+                    )}
+                    {idx === 4 && (
+                      <svg class="w-6 h-6 text-slate-100 group-hover:text-blue-400 transition-colors duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                    )}
+                    {idx === 5 && (
+                      <svg class="w-6 h-6 text-slate-100 group-hover:text-blue-400 transition-colors duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="7" rx="3.5"/><path d="M6 10v4"/></svg>
+                    )}
+                    {idx === 6 && (
+                      <svg class="w-6 h-6 text-slate-100 group-hover:text-blue-400 transition-colors duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12h18"/><path d="M12 3v18"/></svg>
+                    )}
+                    {idx === 7 && (
+                      <svg class="w-6 h-6 text-slate-100 group-hover:text-blue-400 transition-colors duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M8 8h8v8H8z"/></svg>
+                    )}
+                    {idx === 8 && (
+                      <svg class="w-6 h-6 text-slate-100 group-hover:text-blue-400 transition-colors duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20l9-5-9-5-9 5 9 5z"/><path d="M12 12V4"/></svg>
+                    )}
+                    {idx === 9 && (
+                      <svg class="w-6 h-6 text-slate-100 group-hover:text-blue-400 transition-colors duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                    )}
+                    {idx === 10 && (
+                      <svg class="w-6 h-6 text-slate-100 group-hover:text-blue-400 transition-colors duration-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a4 4 0 018 0v2"/></svg>
+                    )}
+                  </span>
+                  <span class="text-[0.78rem] sm:text-xs font-medium text-slate-100 text-center leading-tight break-words w-full">
+                    {log}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
-        {Array.isArray(summary) ? (
-          <ul class="list-none">
-            {summary.map((log) => (
-              <li class="relative mb-3 pl-8 text-base text-neutral before:absolute before:top-1 before:left-0 before:content-[url(/check.svg)]">
-                {log}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p class="text-base text-neutral">{summary}</p>
-        )}
       </div>
     ))
   }

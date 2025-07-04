@@ -1,20 +1,20 @@
 import type { SiteConfig, SiteContent } from "../types";
 
 export const SITE_CONFIG: SiteConfig = {
-  title: "Alejandro Múnez — Mobile & Web Developer",
-  author: "Alejandro Múnez Cuntez",
+  title: "Alberto Balderas — Mobile & Web Developer",
+  author: "Alberto Balderas",
   description:
     "Software Engineer based in San Francisco, USA. I specialize in UI design, web and mobile application development and maintenance.",
   lang: "en",
-  siteLogo: "/alejandro-small.jpg",
+  siteLogo: "/alberto-big.jpg",
   navLinks: [
-    { text: "Experience", href: "#experience" },
+    { text: "Habilidades", href: "#experience" },
     { text: "Projects", href: "#projects" },
     { text: "About", href: "#about" },
   ],
   socialLinks: [
     { text: "Twitter", href: "https://github.com/immois/astro-zen" },
-    { text: "LinkedIn", href: "https://github.com/immois/astro-zen" },
+    { text: "LinkedIn", href: "https://www.linkedin.com/in/abalderas10/" },
     { text: "Github", href: "https://github.com/immois/astro-zen" },
     { text: "Youtube", href: "https://github.com/immois/astro-zen" },
     { text: "Dribbble", href: "https://github.com/immois/astro-zen" },
@@ -25,73 +25,70 @@ export const SITE_CONFIG: SiteConfig = {
 
 export const SITE_CONTENT: SiteContent = {
   hero: {
-    name: "Alejandro Múnez",
+    name: "Alberto Balderas",
     specialty: "Mobile & Web Developer",
     summary:
-      "Developer based in San Francisco, USA. I specialize in UI design, web and mobile application development and maintenance.",
-    email: "example@email.com",
+      "Transformo ideas en experiencias digitales impactantes. Como desarrollador especializado en diseño de interfaces (UI), creación de aplicaciones web y móviles, y mantenimiento técnico continuo, ofrezco soluciones completas para proyectos digitales.\n\nCon base en la Ciudad de México (CDMX), trabajo con metodologías ágiles para garantizar productos.",
+    email: "alberto.balderas@email.com",
   },
   experience: [
     {
-      company: "Zalmart",
-      position: "Lead Android Developer",
-      startDate: "May 2018",
-      endDate: "Sept 2020",
+      company: "Habilidades",
+      position: "",
+      startDate: "",
+      endDate: "",
       summary: [
-        "Implemented advanced memory management and code optimization techniques, resulting in a reduction in application load time by 40% and a decrease in crashes by 25%. This significantly improved user experience and increased user retention by 20%.",
-        "I led a team of developers in building and integrating new features using Jetpack Android components such as LiveData and ViewModel. This enabled us to build scalable and maintainable applications, reducing the crash rate by 20% and speeding up the time to delivery of new features by 15%.",
-        "Integrated Google Pay for in-app purchases, resulting in a 35% increase in mobile transaction revenue. Additionally, implemented Firebase Analytics to gain insights into user behavior, enabling data-driven optimizations and a 30% increase in user retention.",
+        "• Desarrollo de sitios web modernos, rápidos y escalables con renderizado híbrido y rutas API personalizadas.",
+        "• Implementación de sistemas de reservas y pagos en línea totalmente integrados y automatizados.",
+        "• Creación de paneles de administración intuitivos y gestión avanzada de contenidos para equipos no técnicos.",
+        "• Automatización de agendas, cobros y soporte mediante asistentes conversacionales inteligentes.",
+        "• Integración de chatbots y agentes AI entrenados con la información y procesos de tu negocio.",
+        "• Diseño de experiencias de usuario atractivas, responsivas y optimizadas para dispositivos móviles.",
+        "• Despliegue continuo, optimización de velocidad y escalabilidad en la nube.",
+        "• Estrategias avanzadas de SEO, mejora de performance y accesibilidad web.",
+        "• Creación de identidad visual digital, guías de estilo y recursos gráficos personalizados.",
+        "• Integración de APIs externas, automatización de flujos empresariales y conexión entre sistemas.",
+        "• Implementación de analítica avanzada y monitoreo de comportamiento de usuarios para toma de decisiones."
       ],
-    },
-    {
-      company: "Bankit",
-      position: "Mobile Developer",
-      startDate: "Feb 2017",
-      endDate: "May 2018",
-      summary: [
-        "I designed and developed a mobile application using Flutter, allowing it to be deployed on both Android and iOS with a single codebase. This reduced development time by 50% and maintenance costs by 30%, facilitating a consistent user experience on both platforms.",
-        "I integrated biometric authentication and data encryption, significantly improving the security of user data. This implementation resulted in a 40% increase in user trust and a 25% reduction in unauthorized access attempts.",
-      ],
-    },
-    {
-      company: "Driveer",
-      position: "Frontend Developer",
-      startDate: "Jun 2015",
-      endDate: "Oct 2016",
-      summary:
-        "Developed and integrated a real-time vehicle tracking system using WebSockets, improving accuracy and data update in the application. This functionality increased user satisfaction by 30% and reduced customer service inquiries by 25%.",
     },
   ],
   projects: [
     {
-      name: "Spotifu Music",
-      summary: "A music streaming app that emulates Spotify's core features.",
-      linkPreview: "/",
-      linkSource: "https://github.com/immois/astro-zen",
-      image: "/spotifu.png",
+      name: "Blog",
+      summary: "Blog profesional adaptable a dispositivos móviles y fácil de administrar. Incluye panel para publicaciones, categorías y comentarios.",
+      linkPreview: "#",
+      linkSource: "#",
+      image: "/blog1.png",
     },
     {
-      name: "Shopp App",
-      summary: "An e-commerce platform that replicates Shopify's key features.",
-      linkPreview: "/",
-      linkSource: "https://github.com/immois/astro-zen",
-      image: "/shopify-clon.png",
+      name: "Photo Blog con Panel para administrar.",
+      summary: "Crea y administra tu propio blog de fotografía con panel de control, subida de imágenes y categorías. Ideal para fotógrafos y creadores de contenido visual.",
+      linkPreview: "#",
+      linkSource: "#",
+      image: "/photoblog.png",
     },
     {
-      name: "ClonTagram",
-      summary: "A social network that replicates the features of Instagram",
-      linkPreview: "/",
-      linkSource: "https://github.com/immois/astro-zen",
-      image: "/clone-ig.png",
+      name: "Villa Galeon",
+      summary: "Página en Next.js con sistema de pagos y reservas, agente AI para reservar y blog.",
+      linkPreview: "https://villagaleon.com",
+      linkSource: "",
+      image: "/villagaleon.png",
+    },
+    {
+      name: "Agentes de IA conversacionales",
+      summary: "Desarrollamos agentes conversacionales de IA personalizados para tu empresa, integrados a tu web y entrenados con tus datos. Automatiza reservas, cobros y atención al cliente con asistentes inteligentes adaptados a tus procesos y necesidades.",
+      linkPreview: "#",
+      linkSource: "#",
+      image: "/ia-agent.png",
     },
   ],
   about: {
     description: `
-      Hi, I’m Alejandro Múnez, a passionate Mobile and Web Developer with a knack for crafting seamless digital experiences. With a strong background in both Android and iOS development, as well as front-end web technologies, I thrive in the intersection where creativity meets technology.
+      Hola, soy Alberto Balderas, apasionado por crear experiencias digitales que combinan diseño y tecnología. Mi enfoque es el desarrollo web y móvil con una visión integral de UI/UX, performance y escalabilidad.
 
-      Over the years, I’ve honed my skills in building robust, user-friendly applications that not only meet the needs of users but also push the boundaries of what’s possible. My projects range from innovative mobile applications to responsive web designs, all with a focus on performance, security, and scalability.
+      He liderado proyectos de e-commerce, soluciones educativas con IA, apps para restaurantes y branding digital, siempre buscando que cada solución tenga impacto real y medible.
     `,
-    image: "/alejandro-big.jpg",
+    image: "/alberto-big.jpg",
   },
 };
 
