@@ -1,7 +1,7 @@
 import type { SiteConfig, SiteContent } from "../types";
 
 export const SITE_CONFIG: SiteConfig = {
-  title: "Alberto Balderas — Mobile & Web Developer",
+  title: "Alberto Balderas — Developer",
   author: "Alberto Balderas",
   description:
     "Software Engineer based in San Francisco, USA. I specialize in UI design, web and mobile application development and maintenance.",
@@ -26,7 +26,7 @@ export const SITE_CONFIG: SiteConfig = {
 export const SITE_CONTENT: SiteContent = {
   hero: {
     name: "Alberto Balderas",
-    specialty: "Mobile & Web Developer",
+    specialty: "Developer",
     summary:
       "Transformo ideas en experiencias digitales impactantes. Como desarrollador especializado en diseño de interfaces (UI), creación de aplicaciones web y móviles, y mantenimiento técnico continuo, ofrezco soluciones completas para proyectos digitales.\n\nCon base en la Ciudad de México (CDMX), trabajo con metodologías ágiles para garantizar productos.",
     email: "alberto.balderas@email.com",
@@ -56,14 +56,14 @@ export const SITE_CONTENT: SiteContent = {
     {
       name: "Blog",
       summary: "Blog profesional adaptable a dispositivos móviles y fácil de administrar. Incluye panel para publicaciones, categorías y comentarios.",
-      linkPreview: "#",
+      linkPreview: "https://creaconstruye.vercel.app/",
       linkSource: "#",
-      image: "/blog1.png",
+      image: "/blog.png",
     },
     {
       name: "Photo Blog con Panel para administrar.",
       summary: "Crea y administra tu propio blog de fotografía con panel de control, subida de imágenes y categorías. Ideal para fotógrafos y creadores de contenido visual.",
-      linkPreview: "#",
+      linkPreview: "https://abm-photo-blog.vercel.app/",
       linkSource: "#",
       image: "/photoblog.png",
     },
@@ -76,17 +76,17 @@ export const SITE_CONTENT: SiteContent = {
     },
     {
       name: "Agentes de IA conversacionales",
-      summary: "Desarrollamos agentes conversacionales de IA personalizados para tu empresa, integrados a tu web y entrenados con tus datos. Automatiza reservas, cobros y atención al cliente con asistentes inteligentes adaptados a tus procesos y necesidades.",
+      summary: "Asistentes inteligentes personalizados para tu negocio. Automatiza reservas, pagos y atención al cliente con IA entrenada con tus datos y procesos.",
       linkPreview: "#",
       linkSource: "#",
-      image: "/ia-agent.png",
+      image: "/wave.png",
     },
   ],
   about: {
     description: `
-      Hola, soy Alberto Balderas, apasionado por crear experiencias digitales que combinan diseño y tecnología. Mi enfoque es el desarrollo web y móvil con una visión integral de UI/UX, performance y escalabilidad.
+      ¡Hola! Soy Alberto, me apasiona llevar proyectos desde la idea inicial hasta su implementación tecnológica. Me especializo en desarrollo con IA first, LLMs, MCP y Agentes AI Conversacionales.
 
-      He liderado proyectos de e-commerce, soluciones educativas con IA, apps para restaurantes y branding digital, siempre buscando que cada solución tenga impacto real y medible.
+      Disfruto creando soluciones que combinan lo mejor de la tecnología actual para resolver problemas reales de manera innovadora.
     `,
     image: "/alberto-big.jpg",
   },
