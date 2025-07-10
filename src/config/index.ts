@@ -15,8 +15,7 @@ export const SITE_CONFIG: SiteConfig = {
   socialLinks: [
     { text: "Twitter", href: "https://github.com/immois/astro-zen" },
     { text: "LinkedIn", href: "https://www.linkedin.com/in/abalderas10/" },
-    { text: "Github", href: "https://github.com/immois/astro-zen" },
-    { text: "Youtube", href: "https://github.com/immois/astro-zen" },
+    { text: "Github", href: "https://github.com/abalderas10" },
     { text: "Dribbble", href: "https://github.com/immois/astro-zen" },
   ],
   socialImage: "/zen-og.png",
@@ -38,17 +37,12 @@ export const SITE_CONTENT: SiteContent = {
       startDate: "",
       endDate: "",
       summary: [
-        "• Desarrollo de sitios web modernos, rápidos y escalables con renderizado híbrido y rutas API personalizadas.",
-        "• Implementación de sistemas de reservas y pagos en línea totalmente integrados y automatizados.",
-        "• Creación de paneles de administración intuitivos y gestión avanzada de contenidos para equipos no técnicos.",
-        "• Automatización de agendas, cobros y soporte mediante asistentes conversacionales inteligentes.",
-        "• Integración de chatbots y agentes AI entrenados con la información y procesos de tu negocio.",
-        "• Diseño de experiencias de usuario atractivas, responsivas y optimizadas para dispositivos móviles.",
-        "• Despliegue continuo, optimización de velocidad y escalabilidad en la nube.",
-        "• Estrategias avanzadas de SEO, mejora de performance y accesibilidad web.",
-        "• Creación de identidad visual digital, guías de estilo y recursos gráficos personalizados.",
-        "• Integración de APIs externas, automatización de flujos empresariales y conexión entre sistemas.",
-        "• Implementación de analítica avanzada y monitoreo de comportamiento de usuarios para toma de decisiones."
+        "Desarrollo web moderno con renderizado híbrido y APIs personalizadas",
+        "Sistemas de reservas y pagos en línea automatizados",
+        "Paneles de administración intuitivos para gestión de contenidos",
+        "Chatbots y asistentes AI personalizados para tu negocio",
+        "Diseño UI/UX responsive y optimizado para móviles",
+        "Optimización de rendimiento, SEO y analítica avanzada"
       ],
     },
   ],
