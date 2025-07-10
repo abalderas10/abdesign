@@ -8,7 +8,7 @@ export const SITE_CONFIG: SiteConfig = {
   lang: "en",
   siteLogo: "/alberto-big.jpg",
   navLinks: [
-    { text: "Habilidades", href: "#experience" },
+    { text: "Features", href: "#features" },
     { text: "Projects", href: "#projects" },
     { text: "About", href: "#about" },
   ],
