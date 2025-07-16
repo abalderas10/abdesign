@@ -1,106 +1,62 @@
----
-// ApiKeyForm.astro - Componente para gestionar la clave API de ElevenLabs
----
-
-<div class="api-key-form bg-[#1c232d]/85 rounded-2xl p-6 shadow-xl border border-neutral/20 mb-6">
-  <h3 class="text-xl font-medium text-primary mb-3">Configuración de API Key</h3>
-  <p class="text-sm text-neutral mb-4">Para utilizar este asistente virtual, se requiere una API Key de ElevenLabs. Esta clave se almacena solo en tu navegador y nunca se envía a nuestros servidores.</p>
-  
-  <div class="api-key-input-container">
-    <input 
-      type="password" 
-      id="api-key-input" 
-      class="w-full p-3 rounded-lg bg-black/30 text-white border border-neutral/30 focus:border-primary focus:outline-none mb-2"
-      placeholder="Ingresa tu clave API de ElevenLabs"
-    />
-    
-    <div class="flex gap-2">
-      <button 
-        id="save-api-key" 
-        class="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg"
-      >
-        Guardar Clave
-      </button>
-      
-      <button 
-        id="clear-api-key" 
-        class="flex-1 bg-neutral-700 hover:bg-neutral-600 text-white py-2 px-4 rounded-lg"
-      >
-        Borrar Clave
-      </button>
-    </div>
+<div class="flex flex-col space-y-4 max-w-md mx-auto p-6 bg-white/5 rounded-lg">
+  <input
+    type="text"
+    id="apiKeyInput"
+    class="p-2 border rounded bg-white/10 text-white"
+    placeholder="Ingresa tu clave API de ElevenLabs"
+  />
+  <div class="flex space-x-2">
+    <button
+      id="saveButton"
+      class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+    >
+      Guardar
+    </button>
+    <button
+      id="clearButton"
+      class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+    >
+      Borrar
+    </button>
   </div>
-  
-  <div id="api-key-status" class="mt-3 text-sm">
-    <span class="text-yellow-500">No hay clave API configurada</span>
-  </div>
+  <div id="status" class="text-center"></div>
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const apiKeyInput = document.getElementById('api-key-input');
-    const saveButton = document.getElementById('save-api-key');
-    const clearButton = document.getElementById('clear-api-key');
-    const statusElement = document.getElementById('api-key-status');
-    
-    // Clave de localStorage para la API key
-    const API_KEY_STORAGE_KEY = 'elevenlabs_api_key';
-    
-    // Verificar si ya hay una clave guardada
-    const checkApiKey = () => {
-      const savedKey = localStorage.getItem(API_KEY_STORAGE_KEY);
-      if (savedKey) {
-        statusElement.innerHTML = '<span class="text-green-500">✓ Clave API configurada</span>';
-        apiKeyInput.value = ''; // Por seguridad no mostramos la clave
-        apiKeyInput.placeholder = '••••••••••••••••••••••••••••••';
-        
-        // Emitir evento para notificar que hay una clave API disponible
-        document.dispatchEvent(new CustomEvent('elevenlabs:api-key-available'));
-      } else {
-        statusElement.innerHTML = '<span class="text-yellow-500">No hay clave API configurada</span>';
-        apiKeyInput.placeholder = 'Ingresa tu clave API de ElevenLabs';
-        
-        // Emitir evento para notificar que no hay clave API
-        document.dispatchEvent(new CustomEvent('elevenlabs:api-key-missing'));
-      }
-    };
-    
-    // Guardar la clave API
+  declare global {
+    interface Window {
+      getElevenLabsApiKey: () => string | null;
+    }
+  }
+
+  const apiKeyInput = document.getElementById('apiKeyInput') as HTMLInputElement;
+  const saveButton = document.getElementById('saveButton');
+  const clearButton = document.getElementById('clearButton');
+  const statusElement = document.getElementById('status');
+
+  if (apiKeyInput && saveButton && clearButton && statusElement) {
+    apiKeyInput.placeholder = 'Ingresa tu clave API de ElevenLabs';
+
     saveButton.addEventListener('click', () => {
       const apiKey = apiKeyInput.value.trim();
-      if (apiKey) {
-        // Validación básica (las claves de ElevenLabs suelen ser largas)
-        if (apiKey.length < 10) {
-          statusElement.innerHTML = '<span class="text-red-500">La clave parece inválida. Demasiado corta.</span>';
-          return;
-        }
-        
-        localStorage.setItem(API_KEY_STORAGE_KEY, apiKey);
-        checkApiKey();
-        
-        // Mostrar mensaje de éxito temporal
-        statusElement.innerHTML = '<span class="text-green-500">✓ Clave guardada correctamente!</span>';
-      } else {
-        statusElement.innerHTML = '<span class="text-red-500">Por favor ingresa una clave API válida</span>';
-      }
-    });
-    
-    // Borrar la clave API
-    clearButton.addEventListener('click', () => {
-      localStorage.removeItem(API_KEY_STORAGE_KEY);
-      apiKeyInput.value = '';
-      checkApiKey();
       
-      // Mostrar mensaje temporal
+      if (apiKey.length < 32) {
+        statusElement.innerHTML = '<span class="text-red-500">La clave parece inválida. Demasiado corta.</span>';
+        return;
+      }
+
+      localStorage.setItem('elevenLabsApiKey', apiKey);
+      statusElement.innerHTML = '<span class="text-green-500">✓ Clave guardada correctamente!</span>';
+    });
+
+    clearButton.addEventListener('click', () => {
+      localStorage.removeItem('elevenLabsApiKey');
+      apiKeyInput.value = '';
       statusElement.innerHTML = '<span class="text-yellow-500">Clave API eliminada</span>';
     });
-    
-    // Verificar estado inicial
-    checkApiKey();
-    
-    // Exportar una función para obtener la clave API (accesible desde otros componentes)
-    window.getElevenLabsApiKey = () => {
-      return localStorage.getItem(API_KEY_STORAGE_KEY);
-    };
-  });
+  }
+
+  window.getElevenLabsApiKey = () => {
+    return localStorage.getItem('elevenLabsApiKey');
+  };
 </script>
