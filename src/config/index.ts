@@ -49,7 +49,7 @@ export const SITE_CONTENT: SiteContent = {
   projects: [
     {
       name: "Growth BDM",
-      summary: "Desarrollamos estrategias personalizadas para impulsar el crecimiento de tu negocio a través de alianzas estratégicas y networking efectivo. Tecnologías: Next.js, serverless, cobros Stripe, agendamiento con Cal.com, galería de imágenes Cloudinary y blog con Wisp.",
+      summary: "Next.js, serverless, cobros Stripe, agendamiento con Cal.com, galería de imágenes Cloudinary y blog con Wisp.",
       linkPreview: "https://www.growthbdm.com/",
       linkSource: "#",
       image: "/growthbdm.png",
