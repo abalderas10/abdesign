@@ -48,6 +48,13 @@ export const SITE_CONTENT: SiteContent = {
   ],
   projects: [
     {
+      name: "Growth BDM",
+      summary: "Desarrollamos estrategias personalizadas para impulsar el crecimiento de tu negocio a través de alianzas estratégicas y networking efectivo. Tecnologías: Next.js, serverless, cobros Stripe, agendamiento con Cal.com, galería de imágenes Cloudinary y blog con Wisp.",
+      linkPreview: "https://www.growthbdm.com/",
+      linkSource: "#",
+      image: "/growthbdm.png",
+    },
+    {
       name: "Blog",
       summary: "Blog profesional adaptable a dispositivos móviles y fácil de administrar. Incluye panel para publicaciones, categorías y comentarios.",
       linkPreview: "https://creaconstruye.vercel.app/",
