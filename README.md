@@ -1,32 +1,24 @@
-# AstroZen - Personal Portfolio Website
+Personal Portfolio Website
 
 ## Rama OK5 para despliegue en Vercel
 
-AstroZen is a minimalist, accessible and responsive portfolio template for your personal portfolio website. It is built with Astro and TailwindCSS.
 
-![zen-og](https://github.com/user-attachments/assets/7a72aaae-6652-4cd0-becc-8e6a3c224993)
 
-> [!NOTE]
-> The information contained in this template, including names, images, and content, is entirely fictitious and is intended solely to give the design a realistic appearance. Any coincidence with real-life people, events, or situations is purely coincidental. It is recommended that you replace this information with your own information.
 
-## 🔥 Features
 
-- [x] Minimalist design. clean and simple
-- [x] Mobile-first responsive layout
-- [x] SEO-friendly and accessible
-- [x] Easy to customize with a single configuration file
 
-## ✅ Lighthouse Score
+## 📂 Projects
 
-![performance](https://github.com/user-attachments/assets/4f95e2ca-03f9-4996-9e34-dcd179194c58)
+- **Growth BDM**: Next.js, serverless, cobros Stripe, agendamiento con Cal.com, galería de imágenes Cloudinary y blog con Wisp.
+- **Blog**: Blog profesional adaptable a dispositivos móviles y fácil de administrar. Incluye panel para publicaciones, categorías y comentarios.
+- **Photo Blog con Panel para administrar**: Crea y administra tu propio blog de fotografía con panel de control, subida de imágenes y categorías.
+- **Villa Galeon**: Página en Next.js con sistema de pagos y reservas, agente AI para reservar y blog.
+- **Agentes de IA conversacionales**: Asistentes inteligentes personalizados para tu negocio.
+- **Galería de Imagenes Evento**: [Workshop Growth BDM](https://workshop.growthbdm.com/)
 
-## 🚀 Getting Started
 
-Clone this repository to your local machine using Git.
 
-```scheme
-git clone https://github.com/immois/astro-zen.git
-cd astro-zen
+
 ```
 
 | Command        | Action                                       |

@@ -82,6 +82,13 @@ export const SITE_CONTENT: SiteContent = {
       linkSource: "#",
       image: "/wave.png",
     },
+    {
+      name: "Galería de Imagenes Evento",
+      summary: "Galería de imágenes para el Workshop Oportunidades de Desarrollo en el Sector Comercial e Industrial - Agentes de Inteligencia Artificial IAMIA.",
+      linkPreview: "https://workshop.growthbdm.com/",
+      linkSource: "#",
+      image: "/growthbdm.png",
+    },
   ],
   about: {
     description: `
