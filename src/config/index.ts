@@ -48,6 +48,20 @@ export const SITE_CONTENT: SiteContent = {
   ],
   projects: [
     {
+      name: "Urban Sonríe",
+      summary: "Diseño web de acuerdo a análisis. Clínica dental de vanguardia con tecnología avanzada y atención personalizada.",
+      linkPreview: "https://urban-sonrie.abdev.click/",
+      linkSource: "",
+      image: "/urban-sonrie.png",
+    },
+    {
+      name: "Docs Análisis de Clínica Dental",
+      summary: "Documentación para proyectos. Análisis completo y documentación técnica para clínica dental.",
+      linkPreview: "https://docs-urban-sonrie.abdev.click",
+      linkSource: "",
+      image: "/docs-usonrie.png",
+    },
+    {
       name: "Growth BDM",
       summary: "Next.js, serverless, cobros Stripe, agendamiento con Cal.com, galería de imágenes Cloudinary y blog con Wisp.",
       linkPreview: "https://www.growthbdm.com/",
