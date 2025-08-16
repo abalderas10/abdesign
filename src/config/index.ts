@@ -71,7 +71,7 @@ export const SITE_CONTENT: SiteContent = {
     {
       name: "Blog",
       summary: "Blog profesional adaptable a dispositivos móviles y fácil de administrar. Incluye panel para publicaciones, categorías y comentarios.",
-      linkPreview: "https://creaconstruye.vercel.app/",
+      linkPreview: "https://blog-wisp.abdev.click/",
       linkSource: "",
       image: "/blog.png",
     },
