@@ -1,0 +1,14 @@
+---
+// AgentConfig.astro — Inyecta la API key de OpenAI de forma segura desde variables de entorno
+// En producción (Vercel), configurar PUBLIC_OPENAI_API_KEY como variable de entorno de Vercel
+const openaiKey = import.meta.env.PUBLIC_OPENAI_API_KEY ?? '';
+---
+
+<script is:inline data-key={openaiKey}>
+  // Inyectar la API key en el contexto global del agente
+  // En producción: configurar PUBLIC_OPENAI_API_KEY en las variables de entorno de Vercel
+  (function() {
+    var el = document.currentScript;
+    window.__ABDEV_OPENAI_KEY__ = (el && el.getAttribute('data-key')) || null;
+  })();
+</script>

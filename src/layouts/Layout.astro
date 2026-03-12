@@ -4,6 +4,8 @@ import "@fontsource/be-vietnam-pro";
 import "@fontsource-variable/gabarito";
 import { SITE_CONFIG } from "@config";
 import Footer from "@components/Footer.astro";
+import ChatAgent from "@components/ChatAgent.astro";
+import AgentConfig from "@components/AgentConfig.astro";
 
 const {
   title,
@@ -48,5 +50,9 @@ const ogImgUrl = canonicalURL + socialImage;
       <slot />
     </main>
     <Footer author={author} socialLinks={socialLinks} />
+
+    <!-- Agente AI de ABDev (Cartesia Line SDK - Sales/Supervisor Architecture) -->
+    <AgentConfig />
+    <ChatAgent />
   </body>
 </html>
