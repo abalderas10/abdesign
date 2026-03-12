@@ -1,14 +1,16 @@
 ---
-// AgentConfig.astro — Inyecta la API key de OpenAI de forma segura desde variables de entorno
-// En producción (Vercel), configurar PUBLIC_OPENAI_API_KEY como variable de entorno de Vercel
-const openaiKey = import.meta.env.PUBLIC_OPENAI_API_KEY ?? '';
+// AgentConfig.astro — Inyecta las API keys de forma segura desde variables de entorno de Vercel
+// Variables requeridas en Vercel:
+//   PUBLIC_OPENAI_API_KEY   → API key de OpenAI para el chat (GPT-4o-mini)
+//   PUBLIC_CARTESIA_API_KEY → API key de Cartesia para síntesis de voz (Sonic-3)
+const openaiKey   = import.meta.env.PUBLIC_OPENAI_API_KEY   ?? '';
+const cartesiaKey = import.meta.env.PUBLIC_CARTESIA_API_KEY ?? '';
 ---
 
-<script is:inline data-key={openaiKey}>
-  // Inyectar la API key en el contexto global del agente
-  // En producción: configurar PUBLIC_OPENAI_API_KEY en las variables de entorno de Vercel
+<script is:inline data-openai={openaiKey} data-cartesia={cartesiaKey}>
   (function() {
     var el = document.currentScript;
-    window.__ABDEV_OPENAI_KEY__ = (el && el.getAttribute('data-key')) || null;
+    window.__ABDEV_OPENAI_KEY__    = (el && el.getAttribute('data-openai'))   || null;
+    window.__ABDEV_CARTESIA_KEY__  = (el && el.getAttribute('data-cartesia')) || null;
   })();
 </script>

@@ -1,7 +1,7 @@
 ---
-// ABDev AI Agent — Agente conversacional con arquitectura Chat/Supervisor
+// ABDev AI Agent — Agente conversacional con arquitectura Chat/Supervisor + Voz Cartesia
 // Inspirado en Cartesia Line SDK: examples/sales_with_leads + chat_supervisor
-// Capacidades: Explicar servicios · Vender · Agendar
+// Capacidades: Explicar servicios · Vender · Agendar · Hablar con voz Cartesia Sonic-3
 ---
 
 <!-- Botón flotante del agente -->
@@ -17,13 +17,10 @@
     aria-label="Abrir agente ABDev"
     class="group relative flex h-14 w-14 items-center justify-center rounded-full bg-primary shadow-lg shadow-primary/40 transition-all duration-300 hover:scale-110 hover:shadow-primary/60"
   >
-    <!-- Onda de pulso animada -->
     <span class="absolute inset-0 rounded-full bg-primary opacity-30 animate-ping"></span>
-    <!-- Icono robot/AI -->
     <svg id="agent-icon-open" xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-white transition-all duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
       <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23-.693L5 14.5m14.8.8l1.402 1.402c1 1 .03 2.798-1.414 2.798H4.213c-1.444 0-2.414-1.798-1.414-2.798L4.2 15.3" />
     </svg>
-    <!-- Icono X (cerrar) -->
     <svg id="agent-icon-close" xmlns="http://www.w3.org/2000/svg" class="hidden h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
       <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
     </svg>
@@ -34,7 +31,7 @@
 <div
   id="agent-panel"
   class="fixed bottom-24 right-6 z-50 hidden w-[360px] max-w-[calc(100vw-2rem)] flex-col rounded-2xl border border-white/10 bg-black shadow-2xl shadow-black/60 transition-all duration-300"
-  style="max-height: 560px;"
+  style="max-height: 580px;"
 >
   <!-- Header del agente -->
   <div class="flex items-center gap-3 rounded-t-2xl border-b border-white/10 bg-white/5 px-4 py-3">
@@ -46,16 +43,19 @@
     </div>
     <div class="flex-1">
       <p class="text-sm font-semibold text-white">Agente ABDev</p>
-      <p class="text-xs text-neutral">Asistente de desarrollo · En línea</p>
+      <p id="agent-status-text" class="text-xs text-neutral">Asistente de desarrollo · En línea</p>
     </div>
-    <!-- Badge arquitectura -->
-    <span class="rounded-full bg-primary/20 px-2 py-0.5 text-[10px] font-medium text-primary">
+    <!-- Badge voz Cartesia -->
+    <span id="voice-badge" class="hidden rounded-full bg-green-500/20 px-2 py-0.5 text-[10px] font-medium text-green-400">
+      🎙 Voz Cartesia
+    </span>
+    <span id="chat-badge" class="rounded-full bg-primary/20 px-2 py-0.5 text-[10px] font-medium text-primary">
       Chat/Supervisor AI
     </span>
   </div>
 
   <!-- Área de mensajes -->
-  <div id="agent-messages" class="flex flex-1 flex-col gap-3 overflow-y-auto px-4 py-4" style="min-height:280px; max-height:360px;">
+  <div id="agent-messages" class="flex flex-1 flex-col gap-3 overflow-y-auto px-4 py-4" style="min-height:260px; max-height:340px;">
     <!-- Mensaje de bienvenida -->
     <div class="flex items-start gap-2">
       <div class="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-primary/20">
@@ -65,9 +65,9 @@
       </div>
       <div class="max-w-[85%] rounded-2xl rounded-tl-sm bg-white/8 px-3 py-2.5">
         <p class="text-sm leading-relaxed text-white">
-          ¡Hola! Soy el agente de <strong>ABDev</strong>. Puedo explicarte los servicios de desarrollo, ayudarte a encontrar la solución ideal para tu proyecto y agendar una reunión con Alberto. 🚀
+          ¡Hola! Soy el agente de <strong>ABDev</strong>. Puedo explicarte los servicios, ayudarte a encontrar la solución ideal para tu proyecto y agendar una reunión con Alberto. 🚀
         </p>
-        <p class="mt-1.5 text-xs text-neutral">¿En qué puedo ayudarte hoy?</p>
+        <p class="mt-1.5 text-xs text-neutral">¿Prefieres chatear o hablar por voz?</p>
       </div>
     </div>
 
@@ -88,7 +88,7 @@
     </div>
   </div>
 
-  <!-- Indicador de escritura -->
+  <!-- Indicador de escritura / procesando voz -->
   <div id="typing-indicator" class="hidden px-4 pb-2">
     <div class="flex items-center gap-2">
       <div class="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-primary/20">
@@ -97,6 +97,7 @@
         </svg>
       </div>
       <div class="flex items-center gap-1 rounded-2xl rounded-tl-sm bg-white/8 px-3 py-2.5">
+        <span id="typing-label" class="text-xs text-neutral mr-1">Pensando</span>
         <span class="h-1.5 w-1.5 animate-bounce rounded-full bg-neutral" style="animation-delay:0ms"></span>
         <span class="h-1.5 w-1.5 animate-bounce rounded-full bg-neutral" style="animation-delay:150ms"></span>
         <span class="h-1.5 w-1.5 animate-bounce rounded-full bg-neutral" style="animation-delay:300ms"></span>
@@ -104,7 +105,7 @@
     </div>
   </div>
 
-  <!-- Input de mensaje -->
+  <!-- Input de mensaje + botón de voz -->
   <div class="border-t border-white/10 p-3">
     <div class="flex items-center gap-2 rounded-xl bg-white/5 px-3 py-2">
       <input
@@ -115,6 +116,23 @@
         maxlength="500"
         autocomplete="off"
       />
+      <!-- Botón de micrófono (voz) -->
+      <button
+        id="voice-btn"
+        aria-label="Hablar con el agente"
+        title="Hablar con el agente (voz Cartesia)"
+        class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-white/10 text-neutral transition hover:bg-green-500/20 hover:text-green-400"
+      >
+        <!-- Icono micrófono -->
+        <svg id="mic-icon" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
+        </svg>
+        <!-- Icono stop (grabando) -->
+        <svg id="stop-icon" xmlns="http://www.w3.org/2000/svg" class="hidden h-4 w-4 text-red-400" fill="currentColor" viewBox="0 0 24 24">
+          <rect x="6" y="6" width="12" height="12" rx="2"/>
+        </svg>
+      </button>
+      <!-- Botón enviar -->
       <button
         id="agent-send-btn"
         aria-label="Enviar mensaje"
@@ -127,11 +145,25 @@
     </div>
     <!-- Footer del agente -->
     <p class="mt-2 text-center text-[10px] text-neutral/60">
-      Agente AI · Arquitectura
+      Agente AI ·
       <a href="https://github.com/cartesia-ai/line" target="_blank" rel="noopener" class="text-primary/70 hover:text-primary transition">Cartesia Line</a>
-      · Sales/Supervisor
+      · Voz
+      <a href="https://cartesia.ai" target="_blank" rel="noopener" class="text-green-400/70 hover:text-green-400 transition">Sonic-3</a>
+      · Chat/Supervisor
     </p>
   </div>
+</div>
+
+<!-- Indicador de audio reproduciéndose -->
+<div id="audio-playing-indicator" class="fixed bottom-[6.5rem] right-6 z-50 hidden items-center gap-2 rounded-full bg-green-500/20 border border-green-500/30 px-3 py-1.5 text-xs text-green-400 backdrop-blur-sm">
+  <span class="flex gap-0.5 items-end h-4">
+    <span class="w-0.5 bg-green-400 rounded-full audio-bar" style="height:40%"></span>
+    <span class="w-0.5 bg-green-400 rounded-full audio-bar" style="height:80%"></span>
+    <span class="w-0.5 bg-green-400 rounded-full audio-bar" style="height:60%"></span>
+    <span class="w-0.5 bg-green-400 rounded-full audio-bar" style="height:100%"></span>
+    <span class="w-0.5 bg-green-400 rounded-full audio-bar" style="height:50%"></span>
+  </span>
+  Hablando con Cartesia Sonic-3
 </div>
 
 <style>
@@ -139,32 +171,46 @@
     scrollbar-width: thin;
     scrollbar-color: rgba(255,255,255,0.1) transparent;
   }
-  #agent-messages::-webkit-scrollbar {
-    width: 4px;
-  }
-  #agent-messages::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  #agent-messages::-webkit-scrollbar-thumb {
-    background: rgba(255,255,255,0.1);
-    border-radius: 2px;
-  }
-  .bg-white\/8 {
-    background-color: rgba(255,255,255,0.08);
-  }
+  #agent-messages::-webkit-scrollbar { width: 4px; }
+  #agent-messages::-webkit-scrollbar-track { background: transparent; }
+  #agent-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+  .bg-white\/8 { background-color: rgba(255,255,255,0.08); }
+
   @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(8px); }
     to   { opacity: 1; transform: translateY(0); }
   }
-  .msg-animate {
-    animation: fadeInUp 0.25s ease both;
-  }
+  .msg-animate { animation: fadeInUp 0.25s ease both; }
+
   @keyframes agentPanelIn {
     from { opacity: 0; transform: translateY(16px) scale(0.97); }
     to   { opacity: 1; transform: translateY(0) scale(1); }
   }
-  #agent-panel.panel-open {
-    animation: agentPanelIn 0.25s ease both;
+  #agent-panel.panel-open { animation: agentPanelIn 0.25s ease both; }
+
+  /* Animación de barras de audio */
+  @keyframes audioBar {
+    0%, 100% { transform: scaleY(0.4); }
+    50%       { transform: scaleY(1); }
+  }
+  .audio-bar {
+    transform-origin: bottom;
+    animation: audioBar 0.8s ease-in-out infinite;
+  }
+  .audio-bar:nth-child(1) { animation-delay: 0ms; }
+  .audio-bar:nth-child(2) { animation-delay: 160ms; }
+  .audio-bar:nth-child(3) { animation-delay: 320ms; }
+  .audio-bar:nth-child(4) { animation-delay: 480ms; }
+  .audio-bar:nth-child(5) { animation-delay: 640ms; }
+
+  /* Efecto de pulso en el botón de micrófono cuando graba */
+  #voice-btn.recording {
+    background-color: rgba(239, 68, 68, 0.2) !important;
+    animation: micPulse 1s ease-in-out infinite;
+  }
+  @keyframes micPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(239,68,68,0.4); }
+    50%       { box-shadow: 0 0 0 6px rgba(239,68,68,0); }
   }
 </style>
 
@@ -173,65 +219,78 @@
   // ─── Contexto del agente (base de conocimiento de ABDev) ─────────────────
   const ABDEV_SYSTEM_PROMPT = `Eres el Agente de Ventas y Asesoría de ABDev (Alberto Balderas Developer), un asistente conversacional inteligente integrado en el portafolio web de Alberto Balderas.
 
-Tu arquitectura está inspirada en Cartesia Line SDK (examples/sales_with_leads + chat_supervisor): usas un modelo de chat rápido para respuestas cotidianas y puedes escalar a razonamiento profundo para preguntas técnicas complejas.
+Tu arquitectura está inspirada en Cartesia Line SDK (examples/sales_with_leads + chat_supervisor): usas un modelo de chat rápido para respuestas cotidianas y puedes escalar a razonamiento profundo para preguntas técnicas complejas. Además tienes voz propia gracias a Cartesia Sonic-3.
 
 ## Sobre ABDev
 Alberto Balderas es un desarrollador con base en Ciudad de México (CDMX) especializado en:
 - **Desarrollo web moderno**: Astro, Next.js, React, TypeScript, TailwindCSS, renderizado híbrido y APIs personalizadas
 - **Sistemas de reservas y pagos**: integración con Stripe, Cal.com, sistemas de reservas automatizados
 - **Paneles de administración**: CMS intuitivos, gestión de contenidos, dashboards
-- **Agentes AI conversacionales**: Chatbots y asistentes inteligentes personalizados con LLMs, MCP y agentes AI
+- **Agentes AI conversacionales**: Chatbots y asistentes inteligentes personalizados con LLMs, MCP y agentes AI (como tú mismo)
 - **Diseño UI/UX**: Interfaces responsive, optimizadas para móviles, con identidad visual
 - **SEO y rendimiento**: Optimización técnica, analítica avanzada, Core Web Vitals
 
 ## Proyectos destacados
-- **Urban Sonríe**: Sitio web para clínica dental con diseño basado en análisis → https://urban-sonrie.abdev.click/
+- **Urban Sonríe**: Sitio web para clínica dental → https://urban-sonrie.abdev.click/
 - **Growth BDM**: Plataforma Next.js con Stripe, Cal.com, Cloudinary y blog → https://www.growthbdm.com/
 - **Villa Galeon**: Sitio con pagos, reservas y agente AI → https://villagaleon.com
-- **Photo Blog**: Blog de fotografía con panel de administración → https://abm-photo-blog.vercel.app/
-- **Agentes AI conversacionales**: Asistentes inteligentes para negocios (como tú mismo eres un ejemplo)
+- **Agentes AI conversacionales**: Como tú mismo — ejemplo vivo de lo que ABDev construye
 
 ## Tu rol como agente
 1. **EXPLICAR**: Describe los servicios con claridad, usa ejemplos de proyectos reales
 2. **VENDER**: Identifica las necesidades del usuario, muestra el valor diferencial de ABDev, maneja objeciones con empatía
-3. **AGENDAR**: Cuando el usuario muestre interés en contratar o quiera hablar con Alberto, invítalo a agendar una reunión de 30 minutos en Cal.com. Usa la frase exacta: "AGENDAR_REUNION" (en mayúsculas) en tu respuesta cuando quieras activar el calendario
+3. **AGENDAR**: Cuando el usuario quiera una reunión o cotización, incluye exactamente la palabra AGENDAR_REUNION al final de tu respuesta
 
 ## Reglas de conversación
 - Responde siempre en español (latinoamericano)
-- Sé conciso: máximo 3-4 oraciones por respuesta
+- Sé conciso: máximo 3-4 oraciones por respuesta (importante para la voz)
 - Usa un tono profesional pero cercano y entusiasta
-- Si preguntan por precios, explica que dependen del proyecto y que lo ideal es agendar una llamada para dar una cotización personalizada
+- Si preguntan por precios, explica que dependen del proyecto y que lo ideal es agendar una llamada
 - Si detectas que el usuario tiene un proyecto en mente, pregunta sobre sus necesidades específicas
 - Eres un ejemplo vivo de lo que ABDev puede construir para sus clientes
 - Nunca inventes precios específicos ni fechas de entrega sin consultar con Alberto`;
+
+  // ─── Configuración de Cartesia ────────────────────────────────────────────
+  // Voz: Emilio - Friendly Optimist (español latinoamericano, masculino)
+  const CARTESIA_VOICE_ID = 'b0689631-eee7-4a6c-bb86-195f1d267c2e';
+  const CARTESIA_MODEL    = 'sonic-3';
 
   // ─── Estado del agente ────────────────────────────────────────────────────
   const state = {
     isOpen: false,
     isLoading: false,
+    isSpeaking: false,
+    isRecording: false,
     messages: [],
-    apiKey: null,
-    tooltipShown: false,
+    recognition: null,
+    currentAudio: null,
   };
 
   // ─── Referencias DOM ──────────────────────────────────────────────────────
-  const openBtn     = document.getElementById('open-agent-btn');
-  const panel       = document.getElementById('agent-panel');
-  const messagesEl  = document.getElementById('agent-messages');
-  const inputEl     = document.getElementById('agent-input');
-  const sendBtn     = document.getElementById('agent-send-btn');
-  const typingEl    = document.getElementById('typing-indicator');
-  const iconOpen    = document.getElementById('agent-icon-open');
-  const iconClose   = document.getElementById('agent-icon-close');
-  const tooltip     = document.getElementById('agent-tooltip');
-  const quickSugg   = document.getElementById('quick-suggestions');
+  const openBtn        = document.getElementById('open-agent-btn');
+  const panel          = document.getElementById('agent-panel');
+  const messagesEl     = document.getElementById('agent-messages');
+  const inputEl        = document.getElementById('agent-input');
+  const sendBtn        = document.getElementById('agent-send-btn');
+  const typingEl       = document.getElementById('typing-indicator');
+  const typingLabel    = document.getElementById('typing-label');
+  const iconOpen       = document.getElementById('agent-icon-open');
+  const iconClose      = document.getElementById('agent-icon-close');
+  const tooltip        = document.getElementById('agent-tooltip');
+  const quickSugg      = document.getElementById('quick-suggestions');
+  const voiceBtn       = document.getElementById('voice-btn');
+  const micIcon        = document.getElementById('mic-icon');
+  const stopIcon       = document.getElementById('stop-icon');
+  const audioIndicator = document.getElementById('audio-playing-indicator');
+  const voiceBadge     = document.getElementById('voice-badge');
+  const chatBadge      = document.getElementById('chat-badge');
+  const statusText     = document.getElementById('agent-status-text');
 
   // ─── Mostrar tooltip al cargar ────────────────────────────────────────────
   setTimeout(() => {
-    if (!state.tooltipShown && tooltip) {
+    if (tooltip) {
       tooltip.classList.remove('hidden');
-      state.tooltipShown = true;
-      setTimeout(() => tooltip.classList.add('hidden'), 4000);
+      setTimeout(() => tooltip.classList.add('hidden'), 4500);
     }
   }, 2500);
 
@@ -250,6 +309,8 @@ Alberto Balderas es un desarrollador con base en Ciudad de México (CDMX) especi
       panel.classList.remove('flex', 'panel-open');
       iconOpen.classList.remove('hidden');
       iconClose.classList.add('hidden');
+      stopAudio();
+      stopRecording();
     }
   });
 
@@ -277,6 +338,198 @@ Alberto Balderas es un desarrollador con base en Ciudad de México (CDMX) especi
     sendMessage(text);
   }
 
+  // ─── Botón de voz (micrófono) ─────────────────────────────────────────────
+  voiceBtn.addEventListener('click', () => {
+    if (state.isRecording) {
+      stopRecording();
+    } else if (state.isSpeaking) {
+      stopAudio();
+    } else {
+      startRecording();
+    }
+  });
+
+  function startRecording() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      appendSystemMessage('Tu navegador no soporta reconocimiento de voz. Usa Chrome o Edge.');
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'es-MX';
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.onstart = () => {
+      state.isRecording = true;
+      voiceBtn.classList.add('recording');
+      micIcon.classList.add('hidden');
+      stopIcon.classList.remove('hidden');
+      statusText.textContent = 'Escuchando... habla ahora';
+      inputEl.placeholder = '🎙 Escuchando...';
+    };
+
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      inputEl.value = transcript;
+      stopRecording();
+      setTimeout(() => {
+        if (transcript.trim()) sendMessage(transcript.trim());
+      }, 300);
+    };
+
+    recognition.onerror = (event) => {
+      stopRecording();
+      if (event.error !== 'no-speech') {
+        appendSystemMessage('Error de micrófono: ' + event.error + '. Intenta de nuevo.');
+      }
+    };
+
+    recognition.onend = () => {
+      stopRecording();
+    };
+
+    state.recognition = recognition;
+    recognition.start();
+  }
+
+  function stopRecording() {
+    if (state.recognition) {
+      try { state.recognition.stop(); } catch(e) {}
+      state.recognition = null;
+    }
+    state.isRecording = false;
+    voiceBtn.classList.remove('recording');
+    micIcon.classList.remove('hidden');
+    stopIcon.classList.add('hidden');
+    statusText.textContent = 'Asistente de desarrollo · En línea';
+    inputEl.placeholder = 'Escribe tu mensaje...';
+  }
+
+  // ─── Síntesis de voz con Cartesia TTS ────────────────────────────────────
+  async function speakWithCartesia(text) {
+    const cartesiaKey = window.__ABDEV_CARTESIA_KEY__;
+    if (!cartesiaKey) {
+      // Fallback: usar Web Speech API del browser
+      speakWithBrowserTTS(text);
+      return;
+    }
+
+    try {
+      state.isSpeaking = true;
+      showAudioIndicator(true);
+      voiceBadge.classList.remove('hidden');
+      chatBadge.classList.add('hidden');
+      statusText.textContent = 'Hablando con Cartesia Sonic-3...';
+
+      // Limpiar el texto de markdown para la voz
+      const cleanText = text
+        .replace(/\*\*(.*?)\*\*/g, '$1')
+        .replace(/\*(.*?)\*/g, '$1')
+        .replace(/`(.*?)`/g, '$1')
+        .replace(/AGENDAR_REUNION/g, '')
+        .trim();
+
+      const response = await fetch('https://api.cartesia.ai/tts/bytes', {
+        method: 'POST',
+        headers: {
+          'X-API-Key': cartesiaKey,
+          'Cartesia-Version': '2025-04-16',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model_id: CARTESIA_MODEL,
+          transcript: cleanText,
+          voice: {
+            mode: 'id',
+            id: CARTESIA_VOICE_ID,
+          },
+          output_format: {
+            container: 'wav',
+            encoding: 'pcm_f32le',
+            sample_rate: 44100,
+          },
+          language: 'es',
+          generation_config: {
+            speed: 1.0,
+            emotion: 'neutral',
+          },
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Cartesia TTS error: ' + response.status);
+      }
+
+      const audioBlob = await response.blob();
+      const audioUrl  = URL.createObjectURL(audioBlob);
+      const audio     = new Audio(audioUrl);
+      state.currentAudio = audio;
+
+      audio.onended = () => {
+        stopAudio();
+        URL.revokeObjectURL(audioUrl);
+      };
+
+      audio.onerror = () => {
+        stopAudio();
+        URL.revokeObjectURL(audioUrl);
+      };
+
+      await audio.play();
+
+    } catch (err) {
+      console.warn('Cartesia TTS falló, usando browser TTS:', err.message);
+      stopAudio();
+      speakWithBrowserTTS(text);
+    }
+  }
+
+  function speakWithBrowserTTS(text) {
+    if (!window.speechSynthesis) return;
+    const cleanText = text.replace(/\*\*(.*?)\*\*/g, '$1').replace(/AGENDAR_REUNION/g, '').trim();
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+    utterance.lang = 'es-MX';
+    utterance.rate = 1.0;
+    utterance.pitch = 1.0;
+
+    // Intentar usar una voz en español
+    const voices = window.speechSynthesis.getVoices();
+    const esVoice = voices.find(v => v.lang.startsWith('es'));
+    if (esVoice) utterance.voice = esVoice;
+
+    utterance.onend = () => stopAudio();
+    window.speechSynthesis.speak(utterance);
+    state.isSpeaking = true;
+    showAudioIndicator(true);
+    statusText.textContent = 'Hablando...';
+  }
+
+  function stopAudio() {
+    if (state.currentAudio) {
+      state.currentAudio.pause();
+      state.currentAudio = null;
+    }
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    state.isSpeaking = false;
+    showAudioIndicator(false);
+    voiceBadge.classList.add('hidden');
+    chatBadge.classList.remove('hidden');
+    statusText.textContent = 'Asistente de desarrollo · En línea';
+  }
+
+  function showAudioIndicator(show) {
+    if (show) {
+      audioIndicator.classList.remove('hidden');
+      audioIndicator.classList.add('flex');
+    } else {
+      audioIndicator.classList.add('hidden');
+      audioIndicator.classList.remove('flex');
+    }
+  }
+
   // ─── Agregar mensaje al DOM ───────────────────────────────────────────────
   function appendMessage(role, content) {
     const isUser = role === 'user';
@@ -295,24 +548,27 @@ Alberto Balderas es un desarrollador con base en Ciudad de México (CDMX) especi
 
     const bubble = document.createElement('div');
     bubble.className = 'max-w-[85%] rounded-2xl px-3 py-2.5 text-sm leading-relaxed ' +
-      (isUser
-        ? 'rounded-tr-sm bg-primary text-white'
-        : 'rounded-tl-sm bg-white/8 text-white');
+      (isUser ? 'rounded-tr-sm bg-primary text-white' : 'rounded-tl-sm bg-white/8 text-white');
 
-    // Renderizar markdown básico: **negrita**, saltos de línea
     let html = content
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
       .replace(/\n/g, '<br>');
-
     bubble.innerHTML = html;
 
     wrapper.appendChild(avatar);
     wrapper.appendChild(bubble);
 
-    // Remover sugerencias rápidas al primer mensaje del usuario
     if (isUser && quickSugg) quickSugg.remove();
 
     messagesEl.appendChild(wrapper);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  function appendSystemMessage(text) {
+    const el = document.createElement('div');
+    el.className = 'text-center text-xs text-neutral/60 px-4 py-1 msg-animate';
+    el.textContent = text;
+    messagesEl.appendChild(el);
     messagesEl.scrollTop = messagesEl.scrollHeight;
   }
 
@@ -330,7 +586,6 @@ Alberto Balderas es un desarrollador con base en Ciudad de México (CDMX) especi
       Agendar reunión con Alberto
     `;
     btn.addEventListener('click', () => {
-      // Activar el modal de Cal.com existente en la página
       const modal = document.getElementById('contact-modal');
       if (modal) {
         modal.classList.remove('hidden');
@@ -347,23 +602,20 @@ Alberto Balderas es un desarrollador con base en Ciudad de México (CDMX) especi
   // ─── Llamada a la API de OpenAI ───────────────────────────────────────────
   async function sendMessage(userText) {
     if (state.isLoading) return;
+    stopAudio();
 
-    // Agregar mensaje del usuario
     appendMessage('user', userText);
     state.messages.push({ role: 'user', content: userText });
 
-    // Mostrar typing
     state.isLoading = true;
     sendBtn.disabled = true;
+    typingLabel.textContent = 'Pensando';
     typingEl.classList.remove('hidden');
     messagesEl.scrollTop = messagesEl.scrollHeight;
 
     try {
       const apiKey = window.__ABDEV_OPENAI_KEY__;
-
-      if (!apiKey) {
-        throw new Error('NO_KEY');
-      }
+      if (!apiKey) throw new Error('NO_KEY');
 
       const response = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
@@ -390,7 +642,6 @@ Alberto Balderas es un desarrollador con base en Ciudad de México (CDMX) especi
       const data = await response.json();
       const assistantMsg = data.choices?.[0]?.message?.content || 'Lo siento, no pude procesar tu mensaje.';
 
-      // Detectar si el agente quiere agendar
       const shouldSchedule = assistantMsg.includes('AGENDAR_REUNION');
       const cleanMsg = assistantMsg.replace('AGENDAR_REUNION', '').trim();
 
@@ -398,9 +649,11 @@ Alberto Balderas es un desarrollador con base en Ciudad de México (CDMX) especi
       appendMessage('assistant', cleanMsg);
       state.messages.push({ role: 'assistant', content: cleanMsg });
 
-      if (shouldSchedule) {
-        setTimeout(() => appendScheduleButton(), 300);
-      }
+      if (shouldSchedule) setTimeout(() => appendScheduleButton(), 300);
+
+      // Hablar la respuesta con Cartesia
+      typingLabel.textContent = 'Sintetizando voz';
+      await speakWithCartesia(cleanMsg);
 
     } catch (err) {
       typingEl.classList.add('hidden');
@@ -409,7 +662,7 @@ Alberto Balderas es un desarrollador con base en Ciudad de México (CDMX) especi
       if (err.message === 'NO_KEY') {
         errorMsg = 'Para activar el agente con IA, necesito una API key de OpenAI. Por ahora puedo mostrarte los servicios de ABDev: desarrollo web, agentes AI, sistemas de reservas y pagos. ¿Quieres agendar una llamada con Alberto? AGENDAR_REUNION';
       } else {
-        errorMsg = `Tuve un problema técnico (${err.message}). Puedes contactar a Alberto directamente en alberto.balderas@email.com o agendar una reunión. AGENDAR_REUNION`;
+        errorMsg = `Tuve un problema técnico (${err.message}). Puedes contactar a Alberto directamente o agendar una reunión. AGENDAR_REUNION`;
       }
 
       const shouldSchedule = errorMsg.includes('AGENDAR_REUNION');
@@ -418,9 +671,8 @@ Alberto Balderas es un desarrollador con base en Ciudad de México (CDMX) especi
       appendMessage('assistant', cleanMsg);
       state.messages.push({ role: 'assistant', content: cleanMsg });
 
-      if (shouldSchedule) {
-        setTimeout(() => appendScheduleButton(), 300);
-      }
+      if (shouldSchedule) setTimeout(() => appendScheduleButton(), 300);
+      speakWithCartesia(cleanMsg);
     } finally {
       state.isLoading = false;
       sendBtn.disabled = false;
