@@ -341,7 +341,7 @@ Alberto Balderas es un desarrollador con base en Ciudad de México (CDMX) especi
   // ─── Botón de voz (micrófono) ─────────────────────────────────────────────
   voiceBtn.addEventListener('click', () => {
     if (state.isRecording) {
-      stopRecording();
+      stopRecording(true); // detener y enviar lo que haya
     } else if (state.isSpeaking) {
       stopAudio();
     } else {
@@ -349,53 +349,106 @@ Alberto Balderas es un desarrollador con base en Ciudad de México (CDMX) especi
     }
   });
 
-  function startRecording() {
+  async function startRecording() {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
-      appendSystemMessage('Tu navegador no soporta reconocimiento de voz. Usa Chrome o Edge.');
+      appendSystemMessage('Tu navegador no soporta reconocimiento de voz. Por favor usa Chrome o Edge.');
       return;
+    }
+
+    // Solicitar permiso de micrófono explícitamente antes de iniciar
+    try {
+      await navigator.mediaDevices.getUserMedia({ audio: true });
+    } catch (permErr) {
+      appendSystemMessage('Permiso de micrófono denegado. Habilítalo en la configuración de tu navegador.');
+      return;
+    }
+
+    // Limpiar instancia anterior si existe
+    if (state.recognition) {
+      try { state.recognition.abort(); } catch(e) {}
+      state.recognition = null;
     }
 
     const recognition = new SpeechRecognition();
     recognition.lang = 'es-MX';
-    recognition.continuous = false;
-    recognition.interimResults = false;
+    recognition.continuous = true;       // continuo: no para hasta que el usuario haga clic en stop
+    recognition.interimResults = true;   // mostrar resultados parciales en tiempo real
     recognition.maxAlternatives = 1;
+
+    let finalTranscript = '';
+    let interimTranscript = '';
 
     recognition.onstart = () => {
       state.isRecording = true;
+      finalTranscript = '';
+      interimTranscript = '';
       voiceBtn.classList.add('recording');
       micIcon.classList.add('hidden');
       stopIcon.classList.remove('hidden');
-      statusText.textContent = 'Escuchando... habla ahora';
+      statusText.textContent = '🎙 Escuchando... habla ahora';
       inputEl.placeholder = '🎙 Escuchando...';
+      inputEl.value = '';
     };
 
     recognition.onresult = (event) => {
-      const transcript = event.results[0][0].transcript;
-      inputEl.value = transcript;
-      stopRecording();
-      setTimeout(() => {
-        if (transcript.trim()) sendMessage(transcript.trim());
-      }, 300);
+      interimTranscript = '';
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const result = event.results[i];
+        if (result.isFinal) {
+          finalTranscript += result[0].transcript + ' ';
+        } else {
+          interimTranscript += result[0].transcript;
+        }
+      }
+      // Mostrar en tiempo real lo que se está transcribiendo
+      inputEl.value = (finalTranscript + interimTranscript).trim();
     };
 
     recognition.onerror = (event) => {
-      stopRecording();
-      if (event.error !== 'no-speech') {
+      console.warn('Speech recognition error:', event.error);
+      if (event.error === 'not-allowed' || event.error === 'permission-denied') {
+        appendSystemMessage('Permiso de micrófono denegado. Habilítalo en la barra de dirección del navegador.');
+        stopRecording(false);
+      } else if (event.error === 'no-speech') {
+        // No hacer nada, el usuario simplemente no habló
+        statusText.textContent = '🎙 No se detectó voz, intenta de nuevo';
+        setTimeout(() => {
+          if (state.isRecording) statusText.textContent = '🎙 Escuchando... habla ahora';
+        }, 2000);
+      } else if (event.error === 'network') {
+        appendSystemMessage('Error de red en reconocimiento de voz. Verifica tu conexión.');
+        stopRecording(false);
+      } else {
         appendSystemMessage('Error de micrófono: ' + event.error + '. Intenta de nuevo.');
+        stopRecording(false);
       }
     };
 
     recognition.onend = () => {
-      stopRecording();
+      // Si hay texto capturado y el usuario no detuvo manualmente, enviar
+      const text = finalTranscript.trim() || inputEl.value.trim();
+      if (state.isRecording && text) {
+        stopRecording(false);
+        setTimeout(() => sendMessage(text), 200);
+      } else {
+        stopRecording(false);
+      }
     };
 
     state.recognition = recognition;
-    recognition.start();
+    try {
+      recognition.start();
+    } catch(startErr) {
+      console.error('Error al iniciar reconocimiento:', startErr);
+      appendSystemMessage('No se pudo iniciar el micrófono. Intenta de nuevo.');
+      stopRecording(false);
+    }
   }
 
-  function stopRecording() {
+  function stopRecording(sendText = false) {
+    const textToSend = sendText ? inputEl.value.trim() : null;
+
     if (state.recognition) {
       try { state.recognition.stop(); } catch(e) {}
       state.recognition = null;
@@ -406,6 +459,11 @@ Alberto Balderas es un desarrollador con base en Ciudad de México (CDMX) especi
     stopIcon.classList.add('hidden');
     statusText.textContent = 'Asistente de desarrollo · En línea';
     inputEl.placeholder = 'Escribe tu mensaje...';
+
+    if (sendText && textToSend) {
+      inputEl.value = '';
+      setTimeout(() => sendMessage(textToSend), 200);
+    }
   }
 
   // ─── Síntesis de voz con Cartesia TTS ────────────────────────────────────
